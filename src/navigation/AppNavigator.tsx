@@ -6,11 +6,17 @@ import DrawerNavigator from './DrawerNavigator';
 import FavoritesScreen from '../screens/TabScreen/Favorites';
 import RecipeDetailScreen from '../screens/Detail/RecipeDetailScreen';
 import CategoryScreen from '../screens/Detail/CategoryScreen';
+import Login from '../screens/Login';
+import RegisterScreen from '../screens/Register';
 
 type RootStackParamList = {
   StartScreen: undefined;
   Main: undefined;
-  RecipeDetail: {title: String};
+  RecipeDetail: {title: string};
+  Login: undefined;
+  Register: undefined;
+  Category: undefined;
+  Favorites: undefined;
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -25,6 +31,16 @@ const AppNavigator: React.FC = () => {
           options={{headerShown: false}}
         />
         <Stack.Screen
+          name="Login"
+          component={Login}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="Register"
+          component={RegisterScreen}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
           name="Main"
           component={DrawerNavigator}
           options={{headerShown: false}}
@@ -32,7 +48,7 @@ const AppNavigator: React.FC = () => {
         <Stack.Screen
           name="RecipeDetail"
           component={RecipeDetailScreen}
-          options={{headerShown: false, title: 'Recipe detail'}} // show header for RecipedetailScreen
+          options={{headerShown: false, title: 'Recipe detail'}}
         />
         <Stack.Screen
           name="Category"

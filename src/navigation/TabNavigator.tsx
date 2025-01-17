@@ -26,17 +26,18 @@ const TabNavigator = () => {
             iconName = focused ? 'heart' : 'heart-outline';
           }
 
+          
           return (
-            <View style={{alignItems: 'center'}}>
+            <View style={{ alignItems: 'center' }}>
               <Ionicons name={iconName} size={size} color={color} />
-              <Text>{route.name}</Text>
+              <Text style={{ color: color, fontSize: 12 }}>{route.name}</Text>
             </View>
           );
         },
-        tabBarActiveTintColor: '#339A3A', // Warna tab aktif
-        tabBarInactiveTintColor: '#000', // Warna tab tidak aktif
+        tabBarActiveTintColor: '#000', // Warna hitam untuk tab aktif
+        tabBarInactiveTintColor: '#000', // Warna hitam untuk tab tidak aktif
         tabBarStyle: {
-          backgroundColor: '#93F4A8', // Ganti dengan warna sesuai layar
+          backgroundColor: '#93F4A8', 
         },
         tabBarLabel: () => null, // Hilangkan label tab
         headerShown: false, // Menyembunyikan header pada setiap tab

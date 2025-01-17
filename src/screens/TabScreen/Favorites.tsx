@@ -96,19 +96,19 @@ const FavoritesScreen = () => {
   };
 
   useEffect(() => {
-    fetchFavorites();
+    fetchFavorites(); // Tetapkan jika ini relevan dengan logika Anda
 
-    // Detect orientation changes
     const updateLayout = () => {
       const {width, height} = Dimensions.get('window');
       setOrientation(width > height ? 'landscape' : 'portrait');
     };
 
-    Dimensions.addEventListener('change', updateLayout);
-    updateLayout();
+    // Menggunakan event listener dengan metode yang benar
+    const subscription = Dimensions.addEventListener('change', updateLayout);
+    updateLayout(); // Set awal saat komponen dimuat
 
     return () => {
-      Dimensions.removeEventListener('change', updateLayout);
+      subscription.remove(); // Perbaikan di sini, menggunakan metode `remove()` yang baru
     };
   }, []);
 

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -8,27 +8,38 @@ import {
   TextInput,
   TouchableOpacity,
   Dimensions,
+  ScaledSize,
 } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 const SearchScreen: React.FC = () => {
   const navigation = useNavigation();
-  const [orientation, setOrientation] = useState('portrait');
+  const [orientation, setOrientation] = useState<'portrait' | 'landscape'>(
+    'portrait',
+  );
 
   useEffect(() => {
-    const updateLayout = () => {
-      const { width, height } = Dimensions.get('window');
-      setOrientation(width > height ? 'landscape' : 'portrait');
+    const updateLayout = ({window}: {window: ScaledSize}) => {
+      setOrientation(window.width > window.height ? 'landscape' : 'portrait');
     };
 
-    Dimensions.addEventListener('change', updateLayout);
-    updateLayout(); // Set initial orientation
+    const subscription = Dimensions.addEventListener('change', updateLayout);
+    updateLayout({window: Dimensions.get('window')});
 
     return () => {
-      Dimensions.removeEventListener('change', updateLayout);
+      subscription.remove();
     };
   }, []);
+
+  const categories = [
+    {name: 'Seafood', image: require('../../assets/seafood.png')},
+    {name: 'Meat', image: require('../../assets/meat.png')},
+    {name: 'Pasta', image: require('../../assets/noodle.png')},
+    {name: 'Bread', image: require('../../assets/roti.png')},
+    {name: 'Chicken', image: require('../../assets/chiken.png')},
+    {name: 'Diet', image: require('../../assets/diet.png')},
+  ];
 
   return (
     <View style={styles.container}>
@@ -38,11 +49,11 @@ const SearchScreen: React.FC = () => {
         </TouchableOpacity>
         <TextInput
           style={styles.searchInput}
-          placeholder="search"
+          placeholder="Search"
           placeholderTextColor="#000"
         />
       </View>
-      <Text style={styles.categoryTitle}>category</Text>
+      <Text style={styles.categoryTitle}>Category</Text>
       <ScrollView
         contentContainerStyle={
           orientation === 'portrait'
@@ -58,7 +69,7 @@ const SearchScreen: React.FC = () => {
                 : styles.categoryItemLandscape
             }
             onPress={() =>
-              navigation.navigate('CategoryScreen', { category: category.name })
+              navigation.navigate('CategoryScreen', {category: category.name})
             }>
             <Image
               source={category.image}
@@ -74,15 +85,6 @@ const SearchScreen: React.FC = () => {
     </View>
   );
 };
-
-const categories = [
-  { name: 'Seafood', image: require('../../assets/seafood.png') },
-  { name: 'Meat', image: require('../../assets/meat.png') },
-  { name: 'Pasta', image: require('../../assets/noodle.png') },
-  { name: 'Bread', image: require('../../assets/roti.png') },
-  { name: 'Chicken', image: require('../../assets/chiken.png') },
-  { name: 'Diet', image: require('../../assets/diet.png') },
-];
 
 const styles = StyleSheet.create({
   container: {
@@ -110,38 +112,32 @@ const styles = StyleSheet.create({
     marginVertical: 20,
     color: '#000',
   },
-  // Portrait Container
   categoryContainerPortrait: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'space-between',
   },
-  // Landscape Container
   categoryContainerLandscape: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'center',
   },
-  // Portrait Item
   categoryItemPortrait: {
     width: '48%',
     marginVertical: 10,
   },
-  // Landscape Item
   categoryItemLandscape: {
-    width: '30%', // Lebih kecil pada landscape untuk lebih banyak item
+    width: '30%',
     margin: 5,
   },
-  // Portrait Image
   categoryImagePortrait: {
     width: '100%',
     height: 250,
     borderRadius: 10,
   },
-  // Landscape Image
   categoryImageLandscape: {
     width: '100%',
-    height: 150, // Lebih kecil agar lebih banyak konten tampil
+    height: 150,
     borderRadius: 10,
   },
 });
